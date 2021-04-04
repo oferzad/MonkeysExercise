@@ -6,15 +6,25 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using MonkeysExercise.Services;
+using MonkeysExercise.Models;
 
 namespace MonkeysExercise.ViewModels
 {
-    public class MonkeysViewModel
+    public class MonkeysCollectionViewModel:INotifyPropertyChanged
     {
+
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
         public ObservableCollection<Monkey> MonkeyList { get; }
-        public MonkeysViewModel()
+        public MonkeysCollectionViewModel()
         {
             MonkeyList = new ObservableCollection<Monkey>();
+            this.isRefreshing = false;
             CreateMonkeyCollection();
         }
         async void CreateMonkeyCollection()
@@ -26,19 +36,35 @@ namespace MonkeysExercise.ViewModels
                 this.MonkeyList.Add(m);
             }
         }
-
+        
         public ICommand DeleteCommand => new Command<Monkey>(RemoveMonkey);
         public ICommand RefreshCommand => new Command(RefreshMonkeys);
-
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get
+            {
+                return this.isRefreshing;
+            }
+            set
+            {
+                if (this.isRefreshing != value)
+                {
+                    this.isRefreshing = value;
+                    OnPropertyChanged(nameof(IsRefreshing));
+                }
+            }
+        }
         void RemoveMonkey(Monkey m)
         {
             if (MonkeyList.Contains(m))
             {
                 MonkeyList.Remove(m);
             }
+            
         }
 
-        public async void RefreshMonkeys()
+        async void RefreshMonkeys()
         {
             MonkeysWebServiceProxy proxy = new MonkeysWebServiceProxy();
             List<Monkey> theMonkeys = await proxy.GetAllMonkeysAsync();
@@ -47,6 +73,7 @@ namespace MonkeysExercise.ViewModels
             {
                 this.MonkeyList.Add(m);
             }
+            this.IsRefreshing = false;
         }
     }
     

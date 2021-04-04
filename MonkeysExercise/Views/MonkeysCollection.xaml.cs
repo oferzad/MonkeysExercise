@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using MonkeysExercise.ViewModels;
+using MonkeysExercise.Models;
 
 namespace MonkeysExercise
 {
@@ -15,25 +16,23 @@ namespace MonkeysExercise
     {
         public MonkeysCollection()
         {
-            this.BindingContext = new MonkeysViewModel();
+            this.BindingContext = new MonkeysCollectionViewModel();
             InitializeComponent();
         }
 
-        public ICommand refreshCommand => new Command(Refresh);
-
-        private void Refresh()
-        {
-            MonkeysViewModel monkeysViewModel = (MonkeysViewModel)this.BindingContext;
-            monkeysViewModel.RefreshMonkeys();
-            refreshView.IsRefreshing = false;
-        }
-
+        
         private void collectionName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Monkey chosenMonkey = (Monkey)e.CurrentSelection[0];
             Page monkeyPage = new ShowMonkey();
-            monkeyPage.BindingContext = chosenMonkey;
-            monkeyPage.Title = chosenMonkey.Name;
+            ShowMonkeyViewModel monkeyContext = new ShowMonkeyViewModel
+            {
+                Name = chosenMonkey.Name,
+                ImageUrl = chosenMonkey.ImageUrl,
+                Details = chosenMonkey.Details
+            };
+            monkeyPage.BindingContext = monkeyContext;
+            monkeyPage.Title = monkeyContext.Name;
             Navigation.PushAsync(monkeyPage);
         }
     }

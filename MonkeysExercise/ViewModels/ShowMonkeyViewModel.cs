@@ -8,13 +8,12 @@ using Xamarin.Forms;
 
 namespace MonkeysExercise.ViewModels
 {
-    public class Monkey: INotifyPropertyChanged
+    public class ShowMonkeyViewModel: INotifyPropertyChanged
     {
-        public virtual string Name { get; set; }
-        public virtual string Location { get; set; }
-        public virtual string Details { get; set; }
-        public virtual string ImageUrl { get; set; }
-        public virtual bool IsFavorite { get; set; }
+        public string Name { get; set; }
+        public string Details { get; set; }
+        public string ImageUrl { get; set; }
+        
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

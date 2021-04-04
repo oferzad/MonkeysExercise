@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MonkeysExercise.ViewModels;
+using MonkeysExercise.Models;
 using System.Threading.Tasks;
 
 namespace MonkeysExercise.Services

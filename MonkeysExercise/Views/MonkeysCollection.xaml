@@ -2,11 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MonkeysExercise.MonkeysCollection"
+             xmlns:local="clr-namespace:MonkeysExercise.ViewModels"
              x:Name="thePage">
+    <ContentPage.BindingContext>
+        <local:MonkeysCollectionViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <RefreshView x:Name="refreshView"
-             Command="{Binding Source={x:Reference thePage}, Path=refreshCommand}">
+             Command="{Binding RefreshCommand}"
+             IsRefreshing="{Binding IsRefreshing}">
                 <CollectionView x:Name="collectionName" 
                             ItemsSource="{Binding MonkeyList}" SelectionMode="Single"
                         SelectionChanged="collectionName_SelectionChanged">
