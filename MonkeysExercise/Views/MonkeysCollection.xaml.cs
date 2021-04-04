@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using MonkeysExercise.ViewModels;
 
 namespace MonkeysExercise
 {
@@ -14,7 +15,7 @@ namespace MonkeysExercise
     {
         public MonkeysCollection()
         {
-            this.BindingContext = new Monkeys();
+            this.BindingContext = new MonkeysViewModel();
             InitializeComponent();
         }
 
@@ -22,7 +23,8 @@ namespace MonkeysExercise
 
         private void Refresh()
         {
-            this.BindingContext = new Monkeys();
+            MonkeysViewModel monkeysViewModel = (MonkeysViewModel)this.BindingContext;
+            monkeysViewModel.RefreshMonkeys();
             refreshView.IsRefreshing = false;
         }
 

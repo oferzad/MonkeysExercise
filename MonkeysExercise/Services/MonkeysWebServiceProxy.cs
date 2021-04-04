@@ -1,43 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Text;
-using System.Windows.Input;
-using Xamarin.Forms;
+using MonkeysExercise.ViewModels;
+using System.Threading.Tasks;
 
-namespace MonkeysExercise
+namespace MonkeysExercise.Services
 {
-    public class Monkey: INotifyPropertyChanged
+    public class MonkeysWebServiceProxy
     {
-        public string Name { get; set; }
-        public string Location { get; set; }
-        public string Details { get; set; }
-        public string ImageUrl { get; set; }
-        public bool IsFavorite { get; set; }
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        public async Task<List<Monkey>> GetAllMonkeysAsync()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-    }
-
-    public class Monkeys
-    {
-        public ObservableCollection<Monkey> MonkeyList { get; }
-        public Monkeys()
-        {
-            MonkeyList = new ObservableCollection<Monkey>();
-            CreateMonkeyCollection();
-        }
-        void CreateMonkeyCollection()
-        {
-            ObservableCollection<Monkey> source = this.MonkeyList;
+            //just to simulate a cll to the server rhat takes a second
+            await Task.Delay(1000);
+            List<Monkey> source = new List<Monkey>();
             source.Add(new Monkey
             {
                 Name = "Baboon",
@@ -173,18 +148,7 @@ namespace MonkeysExercise
                 Details = "The gelada, sometimes called the bleeding-heart monkey or the gelada baboon, is a species of Old World monkey found only in the Ethiopian Highlands, with large populations in the Semien Mountains. Theropithecus is derived from the Greek root words for \"beast-ape.\" Like its close relatives the baboons, it is largely terrestrial, spending much of its time foraging in grasslands.",
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Gelada-Pavian.jpg/320px-Gelada-Pavian.jpg"
             });
-
-
-        }
-
-        public ICommand DeleteCommand => new Command<Monkey>(RemoveMonkey);
-
-        void RemoveMonkey(Monkey m)
-        {
-            if (MonkeyList.Contains(m))
-            {
-                MonkeyList.Remove(m);
-            }
+            return source;
         }
     }
 }
