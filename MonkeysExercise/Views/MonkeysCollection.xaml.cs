@@ -16,24 +16,20 @@ namespace MonkeysExercise
     {
         public MonkeysCollection()
         {
-            this.BindingContext = new MonkeysCollectionViewModel();
+            MonkeysCollectionViewModel context = new MonkeysCollectionViewModel();
+            //Register to the event so the view model will be able to navigate to the monkeypage
+            context.NavigateToPageEvent += NavigateToAsync;
+            this.BindingContext = context;
+
             InitializeComponent();
         }
 
-        
-        private void collectionName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //Allow ViewModel to call this function if needed to navigate to another page!
+        public async void NavigateToAsync(Page p)
         {
-            Monkey chosenMonkey = (Monkey)e.CurrentSelection[0];
-            Page monkeyPage = new ShowMonkey();
-            ShowMonkeyViewModel monkeyContext = new ShowMonkeyViewModel
-            {
-                Name = chosenMonkey.Name,
-                ImageUrl = chosenMonkey.ImageUrl,
-                Details = chosenMonkey.Details
-            };
-            monkeyPage.BindingContext = monkeyContext;
-            monkeyPage.Title = monkeyContext.Name;
-            Navigation.PushAsync(monkeyPage);
+            await Navigation.PushAsync(p);
         }
+
+        
     }
 }

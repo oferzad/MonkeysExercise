@@ -4,9 +4,6 @@
              x:Class="MonkeysExercise.MonkeysCollection"
              xmlns:local="clr-namespace:MonkeysExercise.ViewModels"
              x:Name="thePage">
-    <ContentPage.BindingContext>
-        <local:MonkeysCollectionViewModel/>
-    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <RefreshView x:Name="refreshView"
@@ -14,7 +11,8 @@
              IsRefreshing="{Binding IsRefreshing}">
                 <CollectionView x:Name="collectionName" 
                             ItemsSource="{Binding MonkeyList}" SelectionMode="Single"
-                        SelectionChanged="collectionName_SelectionChanged">
+                        SelectionChangedCommand="{Binding SelctionChanged}"
+                        SelectionChangedCommandParameter="{Binding Source={x:Reference collectionName}, Path=SelectedItem}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <SwipeView>
